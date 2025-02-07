@@ -27,13 +27,61 @@ class Distribution:
         self.x_arr = x
         self.y_arr = y
         return self.x_arr, self.y_arr
+    
+    def exponential(self, scale, size):
+        """
+        Generate random numbers from an exponential distribution.
+
+        Parameters:
+        - scale (float): The scale parameter of the exponential distribution.
+        - size (int or tuple of ints): The shape of the output array.
+
+        Returns:
+        - x_arr (ndarray): Array of random numbers drawn from the exponential distribution.
+        - y_arr (ndarray): Array of random numbers drawn from the exponential distribution.
+        """
+        x = np.random.exponential(scale, size)
+        y = np.random.exponential(scale, size)
+        self.x_arr = x
+        self.y_arr = y
+        return self.x_arr, self.y_arr
+    
+    def gamma(self, shape, scale, size):
+        """Generate random numbers from a gamma distribution.
+        
+        This method generates random numbers from a gamma distribution with the given shape and scale parameters.
+        
+        Parameters:
+        shape (float): The shape parameter of the gamma distribution.
+        scale (float): The scale parameter of the gamma distribution.
+        size (int or tuple of ints): The size of the output array.
+        
+        Returns:
+        tuple: A tuple containing two arrays of random numbers drawn from the gamma distribution.
+        """
+        x = np.random.gamma(shape, scale, size)
+        y = np.random.gamma(shape, scale, size)
+        self.x_arr = x
+        self.y_arr = y
+        return self.x_arr, self.y_arr
+
 
 if __name__ == "__main__":
     d1 = Distribution()
     d2 = Distribution()
+    d3 = Distribution()
+    d4 = Distribution()
     d1.normal(mean=[1.0, 0.0],
                 cov=[[0,0.5], [0.5,0]], size=1000)
     d2.uniform(low=[0,0], high=[1,2], size=1000)
-    plt.scatter(d1.x_arr, d1.y_arr, color = "red")
-    plt.scatter(d2.x_arr, d2.y_arr, color = "blue")
+    d3.exponential(scale=1, size=1000)
+    d4.gamma(shape=2, scale=1, size=1000)
+    # plt.scatter(d1.x_arr, d1.y_arr, color = "red")
+    # plt.scatter(d2.x_arr, d2.y_arr, color = "blue")
+    # plt.scatter(d3.x_arr, d3.y_arr, color = "green")
+    # plt.scatter(d4.x_arr, d4.y_arr, color = "yellow")
+    #plot headtmaps instead
+    plt.hist2d(d4.x_arr, d4.y_arr, bins=50, cmap='hot')
+    plt.colorbar()
+    plt.show()
     plt.show()
