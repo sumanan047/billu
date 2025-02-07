@@ -1,3 +1,5 @@
+"""Distributions in 2-D Space."""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
