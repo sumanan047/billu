@@ -5,6 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
+from distributions import Distribution
+
+
 class AgentBase(ABC):
     def __init__(self):
         self.model = None
@@ -107,18 +110,48 @@ class AgentSet(AgentBase):
             number (int): The number of agents in the set.
         """
         super().__init__()
-        self.position_dist = None
-        self.size_dist = None
-        self.color = None
+        self.count = number
+        self._position_dist = None
+        self._size_dist = None
+        self._color = None
 
-    def make_agents(self):
+    @property
+    def position_dist(self):
+        if self._position_dist is None:
+            raise ValueError("position_dist is not set")
+        else:
+            return self._position_dist
+
+    @position_dist.setter
+    def position_dist(self, value):
+        if isinstance(value, Distribution):
+            self._position_dist = value
+        else:
+            raise TypeError("position_dist must be a Distribution object")
+
+    def make_agents(self, position_dist: Distribution=None, size_dist: Distribution=None, color: tuple=None):
         """
         Creates and returns a list of agents based on the position distribution.
 
         Returns:
             list: A list of Agent objects.
         """
-        return [Agent(position=(x, y)) for x, y in zip(self.position_dist.x_arr, self.position_dist.y_arr)]
+        # is user wants to override the distribution it can be set here
+        positions = []
+        sizes = []
+        if position_dist is not None:
+            self.position_dist = position_dist
+            positions = [(x,y) for x, y in zip(self.position_dist.x_arr, self.position_dist.y_arr)]
+        else:
+            positions = [(0,0) for _ in range(self.count)]
+        if size_dist is not None:
+            self._size_dist = size_dist
+            sizes = [(x,y) for x, y in zip(self._size_dist.x_arr, self._size_dist.y_arr)]
+        else:
+            sizes = [(1,1) for _ in range(self.count)]
+        if color is not None:
+            self._color = color
+        return [Agent(color=self._color, position=pos, size=size) for pos, size in zip(positions, sizes)]
 
     def register_model(self, model):
         """
@@ -146,26 +179,27 @@ class AgentSet(AgentBase):
 
 
 if __name__ == "__main__":
-    from distributions import Distribution
-    
-    a1 = Agent((1,0,0), position= (-3,2), size = (1,1))
-    fig, ax = plt.subplots()
-    ax.set_xlim(-15, 15)
-    ax.set_ylim(-15, 15)
-    ax.add_patch(a1.sprite)
-    plt.show()
+
+    # create an agent
+    # a1 = Agent((1,0,0), position= (-3,2), size = (1,1))
+    # fig, ax = plt.subplots()
+    # ax.set_xlim(-15, 15)
+    # ax.set_ylim(-15, 15)
+    # ax.add_patch(a1.sprite)
+    # plt.show()
 
     # create an agentset
     d1 = Distribution()
-    d1.uniform(low=[-10,0], high=[3,5], size=100)
+    d1.uniform(low=[-15,0], high=[1,7], size=100)
+    d2 = Distribution()
+    d2.uniform(low=[1,1], high=[1,1], size=100)
     # unwrap d1.x_arr and d1.y_arr to fill AgentSet positions
     ag1 = AgentSet(number = 100)
-    ag1.position_dist = d1
-    ag1.make_agents()
+    ag_list = ag1.make_agents(position_dist=d1, size_dist=d2, color=(1,0,0))
 
     fig, ax = plt.subplots()
     ax.set_xlim(-15, 15)
     ax.set_ylim(-15, 15)
-    for age in ag1.make_agents():
+    for age in ag_list:
         ax.add_patch(age.sprite)
     plt.show()
