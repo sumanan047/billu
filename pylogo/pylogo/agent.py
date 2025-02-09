@@ -4,26 +4,32 @@ import uuid
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
-from distributions import Distribution_2D, Distribution_1D
+from .distributions import Distribution_2D, Distribution_1D
 
 
 class AgentBase(ABC):
     def __init__(self):
-        self.model = None
-        self.unique_id = None
-        self.color = None
-        self.position = None # tuple
-        self.size = None # tuple
-        self.attributes = {} # user defined attribs like size, age...
-        self.rules = []
+        # abstract classes don't enforce attributes, this is for documentation only
+        self.model = None # name of the model
+        self.unique_id = None # name of the agent
+        self.color = None # color of the agent
+        self.position = None # tuple in 2D or 3D
+        self.size = None # tuple in 2D or 3D
+        self.properties = {} # user defined attribs like size, age...
+        self.rules = [] # list of rules
 
     @abstractmethod
     def register_model(self, model):
+        """ You can register agents to models. This can help save good agents.
+        Load the agents and just register them to a model for reuse."""
         pass
 
     @abstractmethod
     def register_rule(self, rule):
+        """
+        You can save rules and load them later and then register them to a model and conduct
+        a simulation.
+        """
         pass
 
 class TupleDescriptor:
@@ -36,9 +42,6 @@ class TupleDescriptor:
         else:
             raise ValueError("Tuple elements must be between 0 and 1")
 
-import uuid
-import matplotlib.patches as patches
-
 class Agent(AgentBase):
     """
     Represents an agent in the simulation.
@@ -49,6 +52,8 @@ class Agent(AgentBase):
         position (tuple): The position of the agent.
         size (tuple): The size of the agent.
         sprite (matplotlib.patches.Rectangle): The graphical representation of the agent.
+        properties (dict): Additional properties of the agent.
+        rules (list): List of rules associated with the agent.
     """
 
     def __init__(self, color=(1,0,0), position=(0,0), size=(1,1), **kwargs):
