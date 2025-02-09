@@ -126,11 +126,14 @@ class AgentSet(AgentBase):
             number (int): The number of agents in the set.
         """
         super().__init__()
-        self.count = number
+        self._count = number
         self._position_dist = None
         self._size_dist = None
         self._color = None
         self.agentset_properties = kwargs    # start with keys of the dict filled with unique ids
+
+    def __len__(self):
+        return self._count
 
     @property
     def position_dist(self):
@@ -160,12 +163,12 @@ class AgentSet(AgentBase):
             self.position_dist = position_dist
             positions = [(x,y) for x, y in zip(self.position_dist.x_arr, self.position_dist.y_arr)]
         else:
-            positions = [(0,0) for _ in range(self.count)]
+            positions = [(0,0) for _ in range(self._count)]
         if size_dist is not None:
             self._size_dist = size_dist
             sizes = [(x,y) for x, y in zip(self._size_dist.x_arr, self._size_dist.y_arr)]
         else:
-            sizes = [(1,1) for _ in range(self.count)]
+            sizes = [(1,1) for _ in range(self._count)]
         if color is not None:
             self._color = color
         agents = [Agent(color=self._color, position=pos, size=size) for pos, size in zip(positions, sizes)]

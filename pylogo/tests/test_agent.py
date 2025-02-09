@@ -31,3 +31,8 @@ def test_agent_set_properties_int_list():
     agent = Agent()
     agent.set_properties(cars = ['mercedez', 'volvo', 'ferrari'])
     assert agent.properties['cars'] == ['mercedez', 'volvo', 'ferrari']
+
+def test_agentset_creation():
+    agent_set = AgentSet()
+    assert isinstance(agent_set, AgentSet)
+    assert len(agent_set) == 100
