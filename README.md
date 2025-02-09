@@ -50,3 +50,6 @@ The sum of all SpacePatches in the model must make up together the whole Space. 
 
 - AgentSet/Agent
 - SpacePatch/Space
+
+
+&copy; 2025 The Short Epoch. All Rights Reserved.
