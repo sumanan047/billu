@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-from distributions import Distribution
+from distributions import Distribution_2D, Distribution_1D
 
 
 class AgentBase(ABC):
@@ -51,7 +51,7 @@ class Agent(AgentBase):
         sprite (matplotlib.patches.Rectangle): The graphical representation of the agent.
     """
 
-    def __init__(self, color=(1,0,0), position=(0,0), size=(1,1)):
+    def __init__(self, color=(1,0,0), position=(0,0), size=(1,1), **kwargs):
         """
         Initializes a new instance of the Agent class.
 
@@ -59,6 +59,7 @@ class Agent(AgentBase):
             color (tuple, optional): The color of the agent. Defaults to (1,0,0).
             position (tuple, optional): The position of the agent. Defaults to (0,0).
             size (tuple, optional): The size of the agent. Defaults to (1,1).
+            **properties: Additional properties of the agent as keyword arguments.
         """
         super().__init__()
         self.unique_id = uuid.uuid4()
@@ -71,6 +72,7 @@ class Agent(AgentBase):
                                         linewidth=1,
                                         edgecolor='black',
                                         facecolor=self.color)
+        self.properties = kwargs
 
     def register_model(self, model):
         """
@@ -92,6 +94,15 @@ class Agent(AgentBase):
         super().register_rule(rule)
         pass
 
+    def set_properties(self, **kwargs):
+        """
+        Sets the properties of the agent.
+
+        Args:
+            **kwargs: The properties to set.
+        """
+        self.properties.update(kwargs)
+
 class AgentSet(AgentBase):
     """
     A class representing a set of agents in an agent-based modeling project.
@@ -102,7 +113,7 @@ class AgentSet(AgentBase):
         color: The color of the agents.
     """
 
-    def __init__(self, number=100):
+    def __init__(self, number=100, **kwargs):
         """
         Initializes an AgentSet object.
 
@@ -114,6 +125,7 @@ class AgentSet(AgentBase):
         self._position_dist = None
         self._size_dist = None
         self._color = None
+        self.agentset_properties = kwargs    # start with keys of the dict filled with unique ids
 
     @property
     def position_dist(self):
@@ -124,12 +136,12 @@ class AgentSet(AgentBase):
 
     @position_dist.setter
     def position_dist(self, value):
-        if isinstance(value, Distribution):
+        if isinstance(value, Distribution_2D):
             self._position_dist = value
         else:
             raise TypeError("position_dist must be a Distribution object")
 
-    def make_agents(self, position_dist: Distribution=None, size_dist: Distribution=None, color: tuple=None):
+    def make_agents(self, position_dist: Distribution_2D=None, size_dist: Distribution_2D=None, color: tuple=None):
         """
         Creates and returns a list of agents based on the position distribution.
 
@@ -151,7 +163,12 @@ class AgentSet(AgentBase):
             sizes = [(1,1) for _ in range(self.count)]
         if color is not None:
             self._color = color
-        return [Agent(color=self._color, position=pos, size=size) for pos, size in zip(positions, sizes)]
+        agents = [Agent(color=self._color, position=pos, size=size) for pos, size in zip(positions, sizes)]
+        # go thorugh the property set and set for each agent
+        for key, value in self.agentset_properties.items():
+            for i, agent in enumerate(agents):
+                agent.properties[key] = value[i]
+        return agents
 
     def register_model(self, model):
         """
@@ -181,20 +198,24 @@ class AgentSet(AgentBase):
 if __name__ == "__main__":
 
     # create an agent
-    # a1 = Agent((1,0,0), position= (-3,2), size = (1,1))
-    # fig, ax = plt.subplots()
-    # ax.set_xlim(-15, 15)
-    # ax.set_ylim(-15, 15)
-    # ax.add_patch(a1.sprite)
-    # plt.show()
+    a1 = Agent((1,0,0), position= (-3,2), size = (1,1), age=10, gender='male', wealth=100)
+    fig, ax = plt.subplots()
+    ax.set_xlim(-15, 15)
+    ax.set_ylim(-15, 15)
+    ax.add_patch(a1.sprite)
+    plt.show()
+    print(a1.unique_id, a1.color, a1.position, a1.size, a1.properties)
 
     # create an agentset
-    d1 = Distribution()
+    d1 = Distribution_2D()
     d1.uniform(low=[-15,0], high=[1,7], size=100)
-    d2 = Distribution()
-    d2.uniform(low=[1,1], high=[1,1], size=100)
+    d2 = Distribution_2D()
+    d2.uniform(low=[0.5,0.5], high=[0.5,0.5], size=100)
+    d3 = Distribution_1D()
+    d3.normal(mean=33, std=10, size=100)
+
     # unwrap d1.x_arr and d1.y_arr to fill AgentSet positions
-    ag1 = AgentSet(number = 100)
+    ag1 = AgentSet(number = 100, age=d3)
     ag_list = ag1.make_agents(position_dist=d1, size_dist=d2, color=(1,0,0))
 
     fig, ax = plt.subplots()
@@ -203,3 +224,7 @@ if __name__ == "__main__":
     for age in ag_list:
         ax.add_patch(age.sprite)
     plt.show()
+    print(ag1.agentset_properties['age'])
+    plt.hist(ag1.agentset_properties['age'].data)
+    plt.show()
+    print(ag_list[1].properties)
