@@ -1,4 +1,7 @@
 import pytest
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
 from pylogo.agent import Agent, AgentSet
 from pylogo.distributions import Distribution_2D
 
@@ -12,5 +15,19 @@ def test_agent_creation():
 
 def test_agent_patch():
     agent = Agent()
-    print(type(agent.sprite))
-    assert agent.sprite is not None
+    assert isinstance(agent.sprite, mpl.patches.Rectangle)
+
+def test_agent_set_properties_int():
+    agent = Agent()
+    agent.set_properties(age=90)
+    assert agent.properties['age'] == 90
+
+def test_agent_set_properties_str():
+    agent = Agent()
+    agent.set_properties(name='John')
+    assert agent.properties['name'] == 'John'
+
+def test_agent_set_properties_int_list():
+    agent = Agent()
+    agent.set_properties(cars = ['mercedez', 'volvo', 'ferrari'])
+    assert agent.properties['cars'] == ['mercedez', 'volvo', 'ferrari']
