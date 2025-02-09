@@ -1,6 +1,46 @@
-pylogo/pylogo/__pycache__/__init__.cpython-313.pyc
-pylogo/pylogo/__pycache__/agent.cpython-313.pyc
-pylogo/pylogo/__pycache__/distributions.cpython-313.pyc
-pylogo/tests/__pycache__/__init__.cpython-313.pyc
-pylogo/tests/__pycache__/test_agent.cpython-313-pytest-8.3.4.pyc
-pylogo/tests/__pycache__/test_distributions.cpython-313-pytest-8.3.4.pyc
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# C extensions
+*.c
+*.cpp
+*.cxx
+*.h
+*.hpp
+*.hxx
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+develop-eggs/
+.installed.cfg
+*.egg-info/
+.eggs/
+PKG-INFO
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+
+# IDE files
+.idea/
+*.iml
+*.suo
+*.VC.db
+*.DS_Store
+
+# Other IDE files
+.vscode/
+
+# Local configuration files
+.env
+*.log
