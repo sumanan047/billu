@@ -3,7 +3,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Distribution:
+class Distribution_1D:
+    def __init__(self):
+        self.data = None
+
+    def __getitem__(self, index):
+        return self.data[index]
+
+    def normal(self, mean, std, size):
+        self.data = np.random.normal(mean, std, size)
+
+    def uniform(self, low, high, size):
+        self.data = np.random.uniform(low, high, size)
+
+    def exponential(self, scale, size):
+        self.data = np.random.exponential(scale, size)
+
+    def gamma(self, shape, scale, size):
+        self.data = np.random.gamma(shape, scale, size)
+
+
+class Distribution_2D:
     def __init__(self) -> None:
         self.x_arr = None
         self.y_arr = None
@@ -67,10 +87,10 @@ class Distribution:
 
 
 if __name__ == "__main__":
-    d1 = Distribution()
-    d2 = Distribution()
-    d3 = Distribution()
-    d4 = Distribution()
+    d1 = Distribution_2D()
+    d2 = Distribution_2D()
+    d3 = Distribution_2D()
+    d4 = Distribution_2D()
     d1.normal(mean=[1.0, 0.0],
                 cov=[[0,0.5], [0.5,0]], size=1000)
     d2.uniform(low=[0,0], high=[1,2], size=1000)
