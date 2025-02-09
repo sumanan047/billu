@@ -108,6 +108,9 @@ class Agent(AgentBase):
         """
         self.properties.update(kwargs)
 
+    def export_agent(self):
+        pass
+
 class AgentSet(AgentBase):
     """
     A class representing a set of agents in an agent-based modeling project.
