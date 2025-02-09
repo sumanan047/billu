@@ -2,6 +2,8 @@
 
 An agent based modeling python package.
 
+![Static Badge](https://img.shields.io/badge/python%203.13-dev-teal)
+
 ```mermaid
 graph LR
     ModA[Agents] --> Mod(Model) --> Sim(Simulation)
