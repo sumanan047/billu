@@ -1,4 +1,5 @@
 """Space in simulation"""
+import uuid
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import numpy as np
@@ -6,16 +7,16 @@ from agent import AgentBase
 
 
 class Space(AgentBase):
-    def __init__(self):
+    def __init__(self, x_min=0, x_max=10, y_min=0, y_max=10, size=1, color=(1,1,0)):
         # abstract classes don't enforce attributes, this is for documentation only
         self.model = None # name of the model
-        self.unique_id = None # name of the agent
-        self.color = None # color of the
-        self.x_min = None
-        self.x_max = None
-        self.y_min = None
-        self.y_max = None
-        self.size = None #
+        self.unique_id = uuid.uuid4() # name of the agent
+        self.color = color # color of the
+        self.x_min = x_min
+        self.x_max = x_max
+        self.y_min = y_min
+        self.y_max = y_max
+        self.size = size
         self.properties = {} # user defined attribs like size, age...
         self.rules = [] # list of rules
 
@@ -53,13 +54,7 @@ class Space(AgentBase):
         plt.show()
 
 if __name__ == "__main__":
-    sp = Space()
-    sp.x_min = 0
-    sp.x_max = 10
-    sp.y_min = 0
-    sp.y_max = 10
-    sp.size = 1
-    sp.color = (1,1,0)
+    sp = Space(x_min=0, x_max=10, y_min=0, y_max=10, size=1, color=(1,1,0))
     sp.set_space()
     sp.visualize()
     print(sp.properties)
