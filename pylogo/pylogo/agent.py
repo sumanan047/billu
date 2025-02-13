@@ -4,7 +4,7 @@ import uuid
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from .distributions import Distribution_2D, Distribution_1D
+from distributions import Distribution_2D, Distribution_1D
 
 
 class AgentBase(ABC):
