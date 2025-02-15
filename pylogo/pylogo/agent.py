@@ -56,7 +56,10 @@ class Agent(AgentBase):
         rules (list): List of rules associated with the agent.
     """
 
-    def __init__(self, color=(1,0,0), position=(0,0), size=(1,1), **kwargs):
+    def __init__(self, color: tuple=(1,0,0),
+                position: tuple=(0,0),
+                size: tuple=(1,1),
+                **kwargs):
         """
         Initializes a new instance of the Agent class.
 
@@ -111,6 +114,16 @@ class Agent(AgentBase):
     def export_agent(self):
         pass
 
+    def visualize(self):
+        """
+        Visualizes the agent.
+        """
+        fig, ax = plt.subplots()
+        ax.set_xlim(-15, 15)
+        ax.set_ylim(-15, 15)
+        ax.add_patch(self.sprite)
+        plt.show()
+
 class AgentSet(AgentBase):
     """
     A class representing a set of agents in an agent-based modeling project.
@@ -121,7 +134,10 @@ class AgentSet(AgentBase):
         color: The color of the agents.
     """
 
-    def __init__(self, number=100, **kwargs):
+    def __init__(self, number: int=100,
+                position_dist: Distribution_2D=None,
+                size_dist: Distribution_2D=None,
+                **kwargs):
         """
         Initializes an AgentSet object.
 
@@ -130,13 +146,27 @@ class AgentSet(AgentBase):
         """
         super().__init__()
         self._count = number
-        self._position_dist = None
-        self._size_dist = None
+        if position_dist is None:
+            raise ValueError("position_dist is not set")
+        self._position_dist = position_dist
+        if size_dist is None:
+            raise ValueError("size_dist is not set")
+        self._size_dist = size_dist
         self._color = None
         self.agentset_properties = kwargs    # start with keys of the dict filled with unique ids
+        self.agents = self._make_agents(self._position_dist, self._size_dist, self._color)
 
     def __len__(self):
+        """Returns the number of agents in the set."""
         return self._count
+
+    def __iter__(self):
+        """Returns an iterator over the agents in the set."""
+        return iter(self.agents)
+    
+    def __getitem__(self, key):
+        """Returns the agent at the specified index."""
+        return self.agents[key]
 
     @property
     def position_dist(self):
@@ -152,7 +182,7 @@ class AgentSet(AgentBase):
         else:
             raise TypeError("position_dist must be a Distribution object")
 
-    def make_agents(self, position_dist: Distribution_2D=None, size_dist: Distribution_2D=None, color: tuple=None):
+    def _make_agents(self, position_dist: Distribution_2D=None, size_dist: Distribution_2D=None, color: tuple=None):
         """
         Creates and returns a list of agents based on the position distribution.
 
@@ -204,18 +234,24 @@ class AgentSet(AgentBase):
             The registered rule.
         """
         return super().register_rule(rule)
+    
+    def visualize(self):
+        """
+        Visualizes the agents in the set.
+        """
+        fig, ax = plt.subplots()
+        ax.set_xlim(-15, 15)
+        ax.set_ylim(-15, 15)
+        for agent in self.agents:
+            ax.add_patch(agent.sprite)
+        plt.show()
 
 
 if __name__ == "__main__":
 
     # create an agent
     a1 = Agent((1,0,0), position= (-3,2), size = (1,1), age=10, gender='male', wealth=100)
-    fig, ax = plt.subplots()
-    ax.set_xlim(-15, 15)
-    ax.set_ylim(-15, 15)
-    ax.add_patch(a1.sprite)
-    plt.show()
-    print(a1.unique_id, a1.color, a1.position, a1.size, a1.properties)
+    a1.visualize()
 
     # create an agentset
     d1 = Distribution_2D()
@@ -226,16 +262,5 @@ if __name__ == "__main__":
     d3.normal(mean=33, std=10, size=100)
 
     # unwrap d1.x_arr and d1.y_arr to fill AgentSet positions
-    ag1 = AgentSet(number = 100, age=d3)
-    ag_list = ag1.make_agents(position_dist=d1, size_dist=d2, color=(1,0,0))
-
-    fig, ax = plt.subplots()
-    ax.set_xlim(-15, 15)
-    ax.set_ylim(-15, 15)
-    for age in ag_list:
-        ax.add_patch(age.sprite)
-    plt.show()
-    print(ag1.agentset_properties['age'])
-    plt.hist(ag1.agentset_properties['age'].data)
-    plt.show()
-    print(ag_list[1].properties)
+    ag1 = AgentSet(number = 100, position_dist=d1, size_dist=d2,age=d3)
+    ag1.visualize()
