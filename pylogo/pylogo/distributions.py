@@ -104,4 +104,4 @@ if __name__ == "__main__":
     plt.hist2d(d4.x_arr, d4.y_arr, bins=50, cmap='hot')
     plt.colorbar()
     plt.show()
-    plt.show()
+    plt.show()  
