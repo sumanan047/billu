@@ -51,12 +51,12 @@ if __name__ == "__main__":
 
     # create agents
     ag1 = AgentSet(number = 100, age=d3)
-    ag_list = ag1.make_agents(position_dist=d1, size_dist=d2, color=(1,0,0))
+    ag_list = ag1._make_agents(position_dist=d1, size_dist=d2, color=(1,0,0))
 
 
     # another agent
     ag2 = AgentSet(number = 100, age=d3)
-    ag_list2 = ag2.make_agents(position_dist=d11, size_dist=d2, color=(0,1,0))
+    ag_list2 = ag2._make_agents(position_dist=d11, size_dist=d2, color=(0,1,0))
 
     # create space
     sp = Space(x_min=0, x_max=10, y_min=0, y_max=10, size=1, color=(1,1,0))
