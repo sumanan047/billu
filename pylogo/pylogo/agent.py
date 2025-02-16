@@ -292,7 +292,7 @@ class AgentSet(AgentBase):
             ax.add_patch(agent.sprite)
         plt.show()
 
-    def export(self):
+    def export(self, filename: str="agentset.csv"):
             """
             Exports the agents in the set to a dictionary and saves it as a CSV file
             and return a dataframe.
@@ -303,7 +303,7 @@ class AgentSet(AgentBase):
             # creates a list of dicts for each agent
             agentset_dicts = [{k: v[0] for k, v in agent.agent_dict.items()} for agent in self.agents]
             # make a dataframe from the list of dicts
-            pd.DataFrame(agentset_dicts).to_csv("agentset.csv")
+            pd.DataFrame(agentset_dicts).to_csv(filename)
             return pd.DataFrame(agentset_dicts)
 
 if __name__ == "__main__":
