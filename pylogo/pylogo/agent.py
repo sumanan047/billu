@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from distributions import Distribution_2D, Distribution_1D
+from .distributions import Distribution_2D, Distribution_1D
 import pandas as pd
 
 
@@ -200,6 +200,8 @@ class AgentSet(AgentBase):
             raise ValueError("size_dist is not set")
         self._size_dist = size_dist
         self._color = color
+        if not all(isinstance(value, Distribution_1D) for value in kwargs.values()):
+            raise TypeError("kwargs must contain Distribution1D objects")
         self.agentset_properties = kwargs    # start with keys of the dict filled with unique ids
         self.agents = self._make_agents(self._position_dist, self._size_dist, self._color)
 
