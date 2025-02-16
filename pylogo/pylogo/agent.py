@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from .distributions import Distribution_2D, Distribution_1D
+from distributions import Distribution_2D, Distribution_1D
 import pandas as pd
 
 
@@ -148,7 +148,7 @@ class Agent(AgentBase):
         ax.add_patch(self.sprite)
         plt.show()
 
-    def export_agent(self):
+    def export(self):
         """
         Exports the agent to a dictionary.
 
@@ -292,13 +292,25 @@ class AgentSet(AgentBase):
             ax.add_patch(agent.sprite)
         plt.show()
 
+    def export(self):
+        """
+        Exports the agents in the set to a dictionary.
+
+        Returns:
+            dict: A dictionary representation of the agents in the set.
+        """
+        # creates a list of dicts for each agent
+        agentset_dicts = [{k: v[0] for k, v in agent.agent_dict.items()} for agent in self.agents]
+        # make a dataframe from the list of dicts
+        pd.DataFrame(agentset_dicts).to_csv("agentset.csv")
+        return pd.DataFrame(agentset_dicts)
 
 if __name__ == "__main__":
 
     # create an agent
     a1 = Agent(color=(1,0,0), position= (-3,2), size = (1,1), age=10, gender='male', wealth=100)
     a1.visualize()
-    a1.export_agent()
+    a1.export()
 
     # create an agentset
     d1 = Distribution_2D()
@@ -311,3 +323,4 @@ if __name__ == "__main__":
     # unwrap d1.x_arr and d1.y_arr to fill AgentSet positions
     ag1 = AgentSet(number = 100, position_dist=d1, size_dist=d2,age=d3)
     ag1.visualize()
+    ag1.export()

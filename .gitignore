@@ -44,3 +44,6 @@ nosetests.xml
 # Local configuration files
 .env
 *.log
+
+# output files
+*.csv
