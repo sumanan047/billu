@@ -64,6 +64,12 @@ def dist3():
     d3.uniform(90,90, 100)
     return d3
 
+@pytest.fixture
+def dist4():
+    d4 = Distribution_2D()
+    d4.uniform([0,0],[1,1], 10)
+    return d4
+
 def test_agentset_creation(dist1, dist2):
     agent_set = AgentSet(number=100, position_dist=dist1, size_dist=dist2)
     assert isinstance(agent_set, AgentSet)
@@ -80,3 +86,7 @@ def test_agentset_creation_properties(dist1, dist2, dist3):
     # the distribution is a constant
     for agent in agent_set:
         assert agent.properties['age'] == 90
+
+def test_agentset_creation_properties_failure_different_size_dist(dist4, dist2, dist3):
+    with pytest.raises(ValueError):
+        agent_set = AgentSet(number=100, position_dist=dist4, size_dist=dist2, age=dist3)
