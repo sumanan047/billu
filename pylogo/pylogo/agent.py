@@ -293,17 +293,17 @@ class AgentSet(AgentBase):
         plt.show()
 
     def export(self):
-        """
-        Exports the agents in the set to a dictionary.
+            """
+            Exports the agents in the set to a dictionary and saves it as a CSV file.
 
-        Returns:
-            dict: A dictionary representation of the agents in the set.
-        """
-        # creates a list of dicts for each agent
-        agentset_dicts = [{k: v[0] for k, v in agent.agent_dict.items()} for agent in self.agents]
-        # make a dataframe from the list of dicts
-        pd.DataFrame(agentset_dicts).to_csv("agentset.csv")
-        return pd.DataFrame(agentset_dicts)
+            Returns:
+                pandas.DataFrame: A DataFrame representation of the agents in the set.
+            """
+            # creates a list of dicts for each agent
+            agentset_dicts = [{k: v[0] for k, v in agent.agent_dict.items()} for agent in self.agents]
+            # make a dataframe from the list of dicts
+            pd.DataFrame(agentset_dicts).to_csv("agentset.csv")
+            return pd.DataFrame(agentset_dicts)
 
 if __name__ == "__main__":
 
