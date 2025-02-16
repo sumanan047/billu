@@ -294,7 +294,8 @@ class AgentSet(AgentBase):
 
     def export(self):
             """
-            Exports the agents in the set to a dictionary and saves it as a CSV file.
+            Exports the agents in the set to a dictionary and saves it as a CSV file
+            and return a dataframe.
 
             Returns:
                 pandas.DataFrame: A DataFrame representation of the agents in the set.
