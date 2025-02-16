@@ -155,20 +155,8 @@ class Agent(AgentBase):
         Returns:
             dict: A dictionary representation of the agent.
         """
-        # agent_dict = {
-        #     "unique_id": [self.unique_id],
-        #     "r_color": [self._r_color],
-        #     "g_color": [self._g_color],
-        #     "b_color": [self._b_color],
-        #     "x_pos": [self.x_pos],
-        #     "y_pos": [self.y_pos],
-        #     "x_size": [self.x_size],
-        #     "y_size": [self.y_size],
-        #     "y_size": [self.y_size],
-        # }
-        # agent_dict.update(self.properties)
         pd.DataFrame(self.agent_dict).to_csv(f"agent_{self.unique_id}.csv")
-
+        return pd.DataFrame(self.agent_dict)
 
 class AgentSet(AgentBase):
     """
@@ -179,7 +167,6 @@ class AgentSet(AgentBase):
         size_dist: The distribution of sizes for the agents.
         color: The color of the agents.
     """
-
     def __init__(self, number: int=100,
                 position_dist: Distribution_2D=None,
                 size_dist: Distribution_2D=None,
@@ -195,9 +182,16 @@ class AgentSet(AgentBase):
         self._count = number
         if position_dist is None:
             raise ValueError("position_dist is not set")
+        # assrtion to check if both items in the tuple of Distribution 2D
+        # are of length equal to self._count
+        if len(position_dist.x_arr) != self._count or len(position_dist.y_arr) != self._count:
+            raise ValueError("position_dist must have the same length as the number of agents")
         self._position_dist = position_dist
         if size_dist is None:
             raise ValueError("size_dist is not set")
+        # check if both items in the tuple of Distribution 2D are of length equal to self._count
+        if len(size_dist.x_arr) != self._count or len(size_dist.y_arr) != self._count:
+            raise ValueError("size_dist must have the same length as the number of agents")
         self._size_dist = size_dist
         self._color = color
         if not all(isinstance(value, Distribution_1D) for value in kwargs.values()):
