@@ -1,8 +1,7 @@
 """Agents in the simulation."""
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 import uuid
 import types
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -133,7 +132,7 @@ class Agent(AgentBase):
         """
         self.properties.update(kwargs)
 
-    def visualize(self):
+    def _visualize(self):
         fig, ax = plt.subplots()
         ax.set_xlim(-15, 15)
         ax.set_ylim(-15, 15)
@@ -141,7 +140,7 @@ class Agent(AgentBase):
         ax.add_patch(sprite)
         plt.show()
 
-    def export(self):
+    def _export(self):
         """
         Exports the agent to a dictionary.
 
@@ -262,7 +261,7 @@ class AgentSet(AgentBase):
         """
         return super().register_model(model)
     
-    def visualize(self):
+    def _visualize(self):
         """
         Visualizes the agents in the set.
         """
@@ -273,7 +272,7 @@ class AgentSet(AgentBase):
             ax.add_patch(agent.sprite)
         plt.show()
 
-    def export(self, filename: str="agentset.csv"):
+    def _export(self, filename: str="agentset.csv"):
             """
             Exports the agents in the set to a dictionary and saves it as a CSV file
             and return a dataframe.
@@ -286,23 +285,3 @@ class AgentSet(AgentBase):
             # make a dataframe from the list of dicts
             pd.DataFrame(agentset_dicts).to_csv(filename)
             return pd.DataFrame(agentset_dicts)
-
-if __name__ == "__main__":
-
-    # create an agent
-    a1 = Agent(color=(1,0,0), position= (-3,2), size = (1,1), age=10, gender='male', wealth=100)
-    a1.visualize()
-    a1.export()
-
-    # create an agentset
-    d1 = Distribution_2D()
-    d1.uniform(low=[-15,0], high=[1,7], size=100)
-    d2 = Distribution_2D()
-    d2.uniform(low=[0.5,0.5], high=[0.5,0.5], size=100)
-    d3 = Distribution_1D()
-    d3.normal(mean=33, std=10, size=100)
-
-    # unwrap d1.x_arr and d1.y_arr to fill AgentSet positions
-    ag1 = AgentSet(number = 100, position_dist=d1, size_dist=d2,age=d3)
-    ag1.visualize()
-    ag1.export()

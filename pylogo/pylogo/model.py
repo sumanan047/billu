@@ -1,3 +1,4 @@
+"""To be made useful in future version. Right now it is just a dummy class"""
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from agent import AgentSet

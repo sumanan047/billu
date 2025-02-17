@@ -5,7 +5,6 @@ from matplotlib import patches
 import numpy as np
 from agent import AgentBase
 
-
 class Space(AgentBase):
     def __init__(self, x_min=0, x_max=10, y_min=0, y_max=10, color=(1,1,0)):
         # abstract classes don't enforce attributes, this is for documentation only
@@ -23,7 +22,6 @@ class Space(AgentBase):
                                         edgecolor='black',
                                         facecolor=self.color)
         self.properties = {} # user defined attribs like size, age...
-        self.rules = [] # list of rules
 
     def register_model(self, model):
         pass
@@ -34,10 +32,10 @@ class Space(AgentBase):
     def set_space(self, **kwargs):
         self.properties.update(kwargs)
 
-    def export(self):
+    def _export(self):
         pass
 
-    def visualize(self):
+    def _visualize(self):
         fig, ax = plt.subplots()
         for i in range(100):
             x_min = self.x_min
@@ -59,10 +57,3 @@ class Space(AgentBase):
         plt.title("Space")
         plt.savefig("space.png")
         plt.show()
-
-if __name__ == "__main__":
-    sp = Space(x_min=0, x_max=10, y_min=0, y_max=10, color=(1,1,0))
-    sp.set_space()
-    sp.visualize()
-    print(sp.properties)
-    print(sp.unique_id)

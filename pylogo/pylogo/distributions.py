@@ -84,24 +84,3 @@ class Distribution_2D:
         self.x_arr = x
         self.y_arr = y
         return self.x_arr, self.y_arr
-
-
-if __name__ == "__main__":
-    d1 = Distribution_2D()
-    d2 = Distribution_2D()
-    d3 = Distribution_2D()
-    d4 = Distribution_2D()
-    d1.normal(mean=[1.0, 0.0],
-                cov=[[0,0.5], [0.5,0]], size=1000)
-    d2.uniform(low=[0,0], high=[1,2], size=1000)
-    d3.exponential(scale=1, size=1000)
-    d4.gamma(shape=2, scale=1, size=1000)
-    # plt.scatter(d1.x_arr, d1.y_arr, color = "red")
-    # plt.scatter(d2.x_arr, d2.y_arr, color = "blue")
-    # plt.scatter(d3.x_arr, d3.y_arr, color = "green")
-    # plt.scatter(d4.x_arr, d4.y_arr, color = "yellow")
-    #plot headtmaps instead
-    plt.hist2d(d4.x_arr, d4.y_arr, bins=50, cmap='hot')
-    plt.colorbar()
-    plt.show()
-    plt.show()  
