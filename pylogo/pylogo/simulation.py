@@ -1,8 +1,8 @@
 """This is the main simulation module for the pylogo package."""
 import numpy as np
 import pandas as pd
-from agent import Agent
-from rules import move_by_at_angle, move_up, move_down, move_left, move_right
+from .agent import Agent
+from .rules import move_by_at_angle, move_up, move_down, move_left, move_right
 
 
 class Time:

@@ -5,7 +5,7 @@ import types
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from distributions import Distribution_2D, Distribution_1D
+from .distributions import Distribution_2D, Distribution_1D
 import pandas as pd
 
 

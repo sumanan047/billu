@@ -2,7 +2,7 @@
 Some rules are provided and others can be developed by the user
 based on the rules template from this module."""
 
-from agent import Agent, AgentSet
+from .agent import Agent, AgentSet
 import numpy as np
 
 # a collection of simple rules for agents
