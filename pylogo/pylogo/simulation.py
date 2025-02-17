@@ -1,7 +1,7 @@
 """This is the main simulation module for the pylogo package."""
 import numpy as np
 from agent import Agent
-from rules import move_by_at_angle
+from rules import move_by_at_angle, move_up, move_down, move_left, move_right
 
 
 class Time:
@@ -48,8 +48,14 @@ class simulation:
         for _t in self._time:
             for key, value in self.sim_agent_rules.items():
                 for v in value:
-                    key.__dict__[v.__name__](*args, **kwargs)
-            print(f"Time: {_t}, Agent: {key.agent_dict}")
+                    # Get the parameters of the function
+                    params = v.__code__.co_varnames[:v.__code__.co_argcount]
+                    # Filter the arguments and keyword arguments based on the function parameters
+                    filtered_args = [arg for arg in args if arg in params]
+                    filtered_kwargs = {k: v for k, v in kwargs.items() if k in params}
+                    # Call the function with the filtered arguments and keyword arguments
+                    key.__dict__[v.__name__](*filtered_args, **filtered_kwargs)
+            # print(f"Time: {_t}, Agent: {key.agent_dict}")
             
         
     def save_simulation(self):
@@ -69,7 +75,7 @@ if __name__ == '__main__':
     # # make a time object
     _t = Time(0, 10, 0.1)
     # make a simulation
-    sim = simulation({ag: [move_by_at_angle]}, _t)
+    sim = simulation({ag: [move_by_at_angle, move_up]}, _t)
     sim.run_simulation(distance=1, angle=np.pi/10)
     sim.save_simulation()
 

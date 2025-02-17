@@ -41,10 +41,10 @@ def move_by(bound_agent, dx = 1, dy = 1):
     bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
 def move_up(bound_agent, distance=1):
+    print("Moving up")
     bound_agent.y_pos += 1
     # update the dicts
     bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
-
 
 def move_down(bound_agent, distance=1):
     bound_agent.y_pos -= 1
