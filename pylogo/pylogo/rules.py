@@ -49,6 +49,12 @@ def move_right(bound_agent):
 def move_by_at_angle(bound_agent, distance, angle):
     bound_agent.x_pos += distance * np.cos(angle)
     bound_agent.y_pos += distance * np.sin(angle)
+    # print(f'x_pos: {bound_agent.x_pos}, y_pos: {bound_agent.y_pos}')
+    # bound_agent.position = (bound_agent.x_pos, bound_agent.y_pos)
+    # print(f'position: {bound_agent.position}')
+    # update the agent's dictionary agent_dict with the new position
+    bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
+    bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
 
 if __name__ == '__main__':
