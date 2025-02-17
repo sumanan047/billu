@@ -1,6 +1,7 @@
 """Agents in the simulation."""
 from abc import ABC, ABCMeta, abstractmethod
 import uuid
+import types
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,20 +19,11 @@ class AgentBase(ABC):
         self.position = None # tuple in 2D or 3D
         self.size = None # tuple in 2D or 3D
         self.properties = {} # user defined attribs like size, age...
-        self.rules = [] # list of rules
 
     @abstractmethod
     def register_model(self, model):
         """ You can register agents to models. This can help save good agents.
         Load the agents and just register them to a model for reuse."""
-        pass
-
-    @abstractmethod
-    def register_rule(self, rule):
-        """
-        You can save rules and load them later and then register them to a model and conduct
-        a simulation.
-        """
         pass
 
 class TupleDescriptor:
@@ -55,7 +47,6 @@ class Agent(AgentBase):
         size (tuple): The size of the agent.
         sprite (matplotlib.patches.Rectangle): The graphical representation of the agent.
         properties (dict): Additional properties of the agent.
-        rules (list): List of rules associated with the agent.
     """
 
     def __init__(self, color: tuple=(1,0,0),
@@ -119,15 +110,19 @@ class Agent(AgentBase):
         super().register_model(model)
         pass
 
-    def register_rule(self, rule):
+    def register_rule(self, method_name, func):
         """
-        Registers the rule with the agent.
+        Adds a dynamic method to the class instance that can use class attributes.
 
         Args:
-            rule (Rule): The rule to register with the agent.
+          method_name: The name of the method to be added.
+          func: The function to be used as the method.
         """
-        super().register_rule(rule)
-        pass
+        def dynamic_method_wrapper(self, *args, **kwargs):
+                # Access class attributes here
+                result = func(self, *args, **kwargs)  # Call the original function
+                return result
+        setattr(self, method_name, types.MethodType(dynamic_method_wrapper, self))
 
     def set_properties(self, **kwargs):
         """
@@ -266,18 +261,6 @@ class AgentSet(AgentBase):
             The registered model.
         """
         return super().register_model(model)
-
-    def register_rule(self, rule):
-        """
-        Registers a rule with the AgentSet.
-
-        Args:
-            rule: The rule to be registered.
-
-        Returns:
-            The registered rule.
-        """
-        return super().register_rule(rule)
     
     def visualize(self):
         """

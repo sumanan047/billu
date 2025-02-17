@@ -57,8 +57,10 @@ if __name__ == '__main__':
     # define a rule
     import matplotlib.pyplot as plt
     fig, ax = plt.subplots()
-    ax.set_xlim(-100, 100)
-    ax.set_ylim(-100, 100)
+    low_limit = -100
+    high_limit = 100
+    ax.set_xlim(low_limit, high_limit)
+    ax.set_ylim(low_limit, high_limit)
     ax.set_aspect('equal')
 
     # Initialize lists to store positions
@@ -67,9 +69,9 @@ if __name__ == '__main__':
 
     for i in range(100):
         # get a random distance and angle
-        rand_dist = np.random.uniform(0, 5, 1)
-        rand_angle = np.random.uniform(0, 2*np.pi, 1)
-        move_by_at_angle(ag, rand_dist[0], rand_angle[0])
+        rand_dist = np.random.uniform(0, 1, 1)
+        rand_angle = np.random.uniform(0, np.pi, 1)
+        move_by_at_angle(ag, i, i*np.pi/3)
         
         # Append current position to lists
         x_positions.append(ag.x_pos)
@@ -77,8 +79,8 @@ if __name__ == '__main__':
         
         # Clear the previous plot
         ax.clear()
-        ax.set_xlim(-100, 100)
-        ax.set_ylim(-100, 100)
+        ax.set_xlim(low_limit, high_limit)
+        ax.set_ylim(low_limit, high_limit)
         ax.set_aspect('equal')
         
         # Plot the positions
