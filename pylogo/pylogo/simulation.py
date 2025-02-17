@@ -1,5 +1,6 @@
 """This is the main simulation module for the pylogo package."""
 import numpy as np
+import pandas as pd
 from agent import Agent
 from rules import move_by_at_angle, move_up, move_down, move_left, move_right
 
@@ -32,6 +33,7 @@ class simulation:
     def __init__(self, sim_agent_rules: dict, _time: Time = None):
         self.sim_agent_rules = sim_agent_rules
         self._time = _time
+        self.data = None # dataframe to store the simulation data
         for key, value in sim_agent_rules.items():
             if isinstance(key, Agent) and all(callable(func) for func in value):
                 for v in value:
@@ -39,15 +41,20 @@ class simulation:
             else:
                 raise ValueError("rules_list must contain only callable objects.")
 
-    def run_simulation(self, *args, **kwargs):
+    def run_simulation(self,
+                       export = True,
+                       filename = "simulation.csv", *args, **kwargs):
         """
         User should ovveride this method to run the simulation.
         """
         # bind all the values in the self.sim_agent_rules to the key in the dictionary
         # and then call the function with the arguments and keyword arguments
+        time_step_list_for_dicts = []
         for _t in self._time:
             for key, value in self.sim_agent_rules.items():
+                # keys are the agents and values are the functions to be called
                 for v in value:
+                    # iterate through all the functions in the value list
                     # Get the parameters of the function
                     params = v.__code__.co_varnames[:v.__code__.co_argcount]
                     # Filter the arguments and keyword arguments based on the function parameters
@@ -55,9 +62,16 @@ class simulation:
                     filtered_kwargs = {k: v for k, v in kwargs.items() if k in params}
                     # Call the function with the filtered arguments and keyword arguments
                     key.__dict__[v.__name__](*filtered_args, **filtered_kwargs)
-            # print(f"Time: {_t}, Agent: {key.agent_dict}")
-            
-        
+            key.agent_dict['time'] = _t
+            time_step_list_for_dicts.append(key.agent_dict.copy())
+            # print(f"Agent: {key.agent_dict}")
+            # make a dataframe from the list of dictionaries
+            self.data = pd.DataFrame(time_step_list_for_dicts)
+            if export:
+                self.data = self.data.apply(lambda x: x.apply(lambda y: y[0] if isinstance(y, list) else y))
+                self.data.to_csv(filename)
+
+
     def save_simulation(self):
         """
         User should ovveride this method to save the simulation.
@@ -70,15 +84,11 @@ if __name__ == '__main__':
     import numpy as np
     # make an agent
     ag = Agent()
-    # make a rule
-    # ag.register_rule('move_by_at_angle', move_by_at_angle)
-    # # make a time object
     _t = Time(0, 10, 0.1)
     # make a simulation
     sim = simulation({ag: [move_by_at_angle, move_up]}, _t)
     sim.run_simulation(distance=1, angle=np.pi/10)
     sim.save_simulation()
-
     # working .... simulation
     # run the simulation
     # fig , ax = plt.subplots()
