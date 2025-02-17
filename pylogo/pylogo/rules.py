@@ -29,30 +29,43 @@ class Rule(RuleBase):
 def move_to(bound_agent, x, y):
     bound_agent.x_pos = x
     bound_agent.agent.y_pos = y
+    # update the dicts
+    bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
+    bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
 def move_by(bound_agent, dx = 1, dy = 1):
     bound_agent.x_pos += dx
     bound_agent.y_pos += dy
+    # update the dicts
+    bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
+    bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
-def move_up(bound_agent):
+def move_up(bound_agent, distance=1):
     bound_agent.y_pos += 1
+    # update the dicts
+    bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
-def move_down(bound_agent):
+
+def move_down(bound_agent, distance=1):
     bound_agent.y_pos -= 1
+    # update the dicts
+    bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
-def move_left(bound_agent):
+def move_left(bound_agent, distance=1):
     bound_agent.x_pos -= 1
+    # update the dicts
+    bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
 
-def move_right(bound_agent):
+
+def move_right(bound_agent, distance=1):
     bound_agent.x_pos += 1
+    # update the dicts
+    bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
 
 def move_by_at_angle(bound_agent, distance, angle):
     bound_agent.x_pos += distance * np.cos(angle)
     bound_agent.y_pos += distance * np.sin(angle)
-    # print(f'x_pos: {bound_agent.x_pos}, y_pos: {bound_agent.y_pos}')
-    # bound_agent.position = (bound_agent.x_pos, bound_agent.y_pos)
-    # print(f'position: {bound_agent.position}')
-    # update the agent's dictionary agent_dict with the new position
+    # update the dicts
     bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
     bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
