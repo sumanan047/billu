@@ -139,13 +139,11 @@ class Agent(AgentBase):
         self.properties.update(kwargs)
 
     def visualize(self):
-        """
-        Visualizes the agent.
-        """
         fig, ax = plt.subplots()
         ax.set_xlim(-15, 15)
         ax.set_ylim(-15, 15)
-        ax.add_patch(self.sprite)
+        sprite = patches.Rectangle((self.x_pos, self.y_pos), self.x_size, self.y_size)  # Create a new instance
+        ax.add_patch(sprite)
         plt.show()
 
     def export(self):
