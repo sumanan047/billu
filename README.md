@@ -2,6 +2,8 @@
 
 An agent based modeling python package.
 
+[![codecov](https://codecov.io/gh/sumanan047/billu/branch/main/graph/badge.svg?token=0QTAO1ZJMK)](https://codecov.io/gh/sumanan047/billu)
+
 ![Static Badge](https://img.shields.io/badge/python%203.13-dev-teal)
 
 ```mermaid
