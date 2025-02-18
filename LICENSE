@@ -1,21 +1,28 @@
-MIT License
+# The Short Epoch License
 
-Copyright (c) 2025 Suman Saurabh
+This is a private license for the Python package `pylogo`.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## Terms and Conditions
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. **License Grant**: The licensor grants the licensee a non-exclusive, non-transferable, and revocable license to use the `pylogo` package for personal or internal business purposes only.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. **Restrictions**: The licensee shall not:
+  - Distribute, sublicense, or sell copies of the `pylogo` package.
+  - Modify, adapt, or create derivative works based on the `pylogo` package.
+  - Use the `pylogo` package for any commercial purposes without prior written consent from the licensor.
+
+3. **Ownership**: The licensor retains all rights, title, and interest in and to the `pylogo` package, including all intellectual property rights.
+
+4. **Termination**: This license is effective until terminated. The licensor may terminate this license at any time without notice if the licensee breaches any of the terms and conditions. Upon termination, the licensee must cease all use of the `pylogo` package and destroy all copies in their possession.
+
+5. **Disclaimer of Warranty**: The `pylogo` package is provided "as is" without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+
+6. **Limitation of Liability**: In no event shall the licensor be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the `pylogo` package or the use or other dealings in the `pylogo` package.
+
+## Contact Information
+
+For any inquiries, please contact the licensor at [your contact information].
+
+---
+
+© 2025 The Short Epoch. All rights reserved.
