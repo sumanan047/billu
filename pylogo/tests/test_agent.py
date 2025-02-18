@@ -5,8 +5,10 @@ import numpy as np
 from pylogo.agent import Agent, AgentSet, TupleDescriptor
 from pylogo.distributions import Distribution_2D, Distribution_1D
 
-# fixtures for testing
+class MockModel:
+    pass
 
+# fixtures for testing
 @pytest.fixture
 def dist1():
     d1 = Distribution_2D()
@@ -76,6 +78,12 @@ def test_agent_creation():
     assert agent.sprite is not None
     assert agent.agent_dict['unique_id'][0] == agent.unique_id
 
+def test_agent_register_model():
+    mockmodel = MockModel()
+    agent = Agent()
+    agent.register_model(mockmodel)
+    assert agent.model == mockmodel
+
 def test_agent_creation_bad_color():
     with pytest.raises(ValueError):
         agent = Agent(color=(1, 0, 2))
@@ -83,6 +91,24 @@ def test_agent_creation_bad_color():
 def test_agent_patch():
     agent = Agent()
     assert isinstance(agent.sprite, mpl.patches.Rectangle)
+
+def test_agent_visualize():
+    agent = Agent()
+    fig, ax = plt.subplots()
+    agent._visualize()
+    plt.close(fig)
+
+def test_agent_set_properties():
+    agent = Agent()
+    agent.set_properties(age=90, name='John', cars = ['mercedez', 'volvo', 'ferrari'])
+    assert agent.properties['age'] == 90
+    assert agent.properties['name'] == 'John'
+    assert agent.properties['cars'] == ['mercedez', 'volvo', 'ferrari']
+
+def test_agent_export():
+    agent = Agent()
+    agent.set_properties(age=90, name='John', cars = ['mercedez', 'volvo', 'ferrari'])
+    agent._export()
 
 def test_agent_set_properties_int():
     agent = Agent()
@@ -103,10 +129,23 @@ def test_agentset_creation_failure():
     with pytest.raises(ValueError):
         agent_set = AgentSet(10)
 
+# test for AgentSet ========================================================
 def test_agentset_creation(dist1, dist2):
     agent_set = AgentSet(number=100, position_dist=dist1, size_dist=dist2)
     assert isinstance(agent_set, AgentSet)
     assert len(agent_set) == 100
+
+def test_agentset_creation_failure_no_size_dist(dist1):
+    with pytest.raises(ValueError):
+        agent_set = AgentSet(number=100, position_dist=dist1)
+
+def test_agentset_creation_failure_no_position_dist():
+    with pytest.raises(ValueError):
+        agent_set = AgentSet(number=100, size_dist=1)
+
+def test_agentset_creation_failure_position_size_dist_different_length(dist1, dist4):
+    with pytest.raises(ValueError):
+        agent_set = AgentSet(number=100, position_dist=dist1, size_dist=dist4)
 
 def test_agentset_creation_properties_failure(dist1, dist2):
     with pytest.raises(TypeError):

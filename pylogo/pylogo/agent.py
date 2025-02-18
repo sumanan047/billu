@@ -64,6 +64,7 @@ class Agent(AgentBase):
             **properties: Additional properties of the agent as keyword arguments.
         """
         super().__init__()
+        self.model = None
         self.unique_id = str(uuid.uuid4())
         # properties to be set by the user
         self.color = color
@@ -109,7 +110,7 @@ class Agent(AgentBase):
             model (Model): The model to register the agent with.
         """
         super().register_model(model)
-        pass
+        self.model = model
 
     def register_rule(self, method_name, func):
         """
@@ -140,7 +141,6 @@ class Agent(AgentBase):
         ax.set_ylim(-15, 15)
         sprite = patches.Rectangle((self.x_pos, self.y_pos), self.x_size, self.y_size)  # Create a new instance
         ax.add_patch(sprite)
-        plt.show()
 
     def _export(self):
         """
