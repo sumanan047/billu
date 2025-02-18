@@ -53,34 +53,38 @@ class Distribution_2D:
         Generate random numbers from an exponential distribution.
 
         Parameters:
-        - scale (float): The scale parameter of the exponential distribution.
-        - size (int or tuple of ints): The shape of the output array.
+        - scale (list of floats): The scale parameter of the exponential distribution.
+        - size (list of ints): The shape of the output array.
 
         Returns:
         - x_arr (ndarray): Array of random numbers drawn from the exponential distribution.
         - y_arr (ndarray): Array of random numbers drawn from the exponential distribution.
         """
-        x = np.random.exponential(scale, size)
-        y = np.random.exponential(scale, size)
+        assert isinstance(scale, list) and isinstance(size, list), "The scale parameter must be a list."
+        assert size[0] == size[1], "The size of the output arrays must be the same."
+        x = np.random.exponential(scale[0], size[0])
+        y = np.random.exponential(scale[1], size[1])
         self.x_arr = x
         self.y_arr = y
         return self.x_arr, self.y_arr
     
     def gamma(self, shape, scale, size):
-        """Generate random numbers from a gamma distribution.
-        
-        This method generates random numbers from a gamma distribution with the given shape and scale parameters.
-        
-        Parameters:
-        shape (float): The shape parameter of the gamma distribution.
-        scale (float): The scale parameter of the gamma distribution.
-        size (int or tuple of ints): The size of the output array.
-        
-        Returns:
-        tuple: A tuple containing two arrays of random numbers drawn from the gamma distribution.
         """
-        x = np.random.gamma(shape, scale, size)
-        y = np.random.gamma(shape, scale, size)
+        Generate random numbers from a gamma distribution.
+
+        Parameters:
+        - shape (float): The shape parameter of the gamma distribution.
+        - scale (float): The scale parameter of the gamma distribution.
+        - size (int or tuple of ints): The size of the output array.
+
+        Returns:
+        - x_arr (ndarray): Array of random numbers drawn from the gamma distribution.
+        - y_arr (ndarray): Array of random numbers drawn from the gamma distribution.
+        """
+        assert isinstance(shape, list) and isinstance(scale, list) and isinstance(size, list) , "The shape and scale parameters must be lists."
+        assert size[0] == size[1], "The size of the output arrays must be the same."
+        x = np.random.gamma(shape[0], scale[0], size[0])
+        y = np.random.gamma(shape[0], scale[1], size[1])
         self.x_arr = x
         self.y_arr = y
         return self.x_arr, self.y_arr

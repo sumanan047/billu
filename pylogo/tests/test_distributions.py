@@ -33,3 +33,25 @@ def test_distribution_2d_normal():
     assert dist.y_arr.mean() == pytest.approx(0, abs=0.50)
     assert dist.x_arr.std() == pytest.approx(1, abs=0.5)
     assert dist.y_arr.std() == pytest.approx(1, abs=0.5)
+
+def test_distribution_2d_exponential():
+    dist = Distribution_2D()
+    dist.exponential(scale=[1, 1], size=[100, 100])
+    assert len(dist.x_arr) == 100
+    assert len(dist.y_arr) == 100
+    # Check if data is approximately exponentially distributed (basic check)
+    assert dist.x_arr.mean() == pytest.approx(1, abs=0.50)
+    assert dist.y_arr.mean() == pytest.approx(1, abs=0.50)
+    assert dist.x_arr.std() == pytest.approx(1, abs=0.5)
+    assert dist.y_arr.std() == pytest.approx(1, abs=0.5)
+
+def test_distribution_2d_gamma():
+    dist = Distribution_2D()
+    dist.gamma(shape=[1, 1], scale=[1, 1], size=[100, 100])
+    assert len(dist.x_arr) == 100
+    assert len(dist.y_arr) == 100
+    # Check if data is approximately gamma distributed (basic check)
+    assert dist.x_arr.mean() == pytest.approx(1, abs=0.50)
+    assert dist.y_arr.mean() == pytest.approx(1, abs=0.50)
+    assert dist.x_arr.std() == pytest.approx(1, abs=0.5)
+    assert dist.y_arr.std() == pytest.approx(1, abs=0.5)
