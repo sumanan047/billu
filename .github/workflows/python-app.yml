@@ -37,9 +37,4 @@ jobs:
     - name: Test with pytest and pytest-cov
       run: |
         pytest --cov=pylogo
-        - name: Save coverage artifact
-          uses: actions/upload-artifact@v2
-          with:
-            name: coverage-report
-            path: ./htmlcov
-        
+
