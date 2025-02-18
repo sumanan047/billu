@@ -3,10 +3,10 @@ import uuid
 import matplotlib.pyplot as plt
 from matplotlib import patches
 import numpy as np
-from agent import AgentBase
+from .agent import AgentBase
 
 class Space(AgentBase):
-    def __init__(self, x_min=0, x_max=10, y_min=0, y_max=10, color=(1,1,0)):
+    def __init__(self, x_min=0, x_max=1, y_min=0, y_max=1, color=(1,1,0)):
         # abstract classes don't enforce attributes, this is for documentation only
         self.model = None # name of the model
         self.unique_id = uuid.uuid4() # name of the agent
@@ -21,19 +21,17 @@ class Space(AgentBase):
                                         linewidth=1,
                                         edgecolor='black',
                                         facecolor=self.color)
+        self.rules = []
         self.properties = {} # user defined attribs like size, age...
 
     def register_model(self, model):
-        pass
+        self.model = model
 
     def register_rule(self, rule):
-        pass
+        self.rules.append(rule)
 
     def set_space(self, **kwargs):
         self.properties.update(kwargs)
-
-    def _export(self):
-        pass
 
     def _visualize(self):
         fig, ax = plt.subplots()
@@ -45,9 +43,12 @@ class Space(AgentBase):
 
             x = np.random.uniform(x_min, x_max)
             y = np.random.uniform(y_min, y_max)
-            rect = self.sprite.get_bbox()
-            rect.x0 = x
-            rect.y0 = y
+            rect = patches.Rectangle((x, y),
+                                     self.x_max - self.x_min,
+                                     self.y_max - self.y_min,
+                                     linewidth=1,
+                                     edgecolor='black',
+                                     facecolor=self.color)
             ax.add_patch(rect)
 
         ax.set_xlim(self.x_min, self.x_max)
