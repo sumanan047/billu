@@ -30,7 +30,9 @@ class TupleDescriptor:
         return instance._tuple
 
     def __set__(self, instance, value):
-        if isinstance(value, tuple) and all(0 <= item <= 1 for item in value):
+        if not isinstance(value, tuple):
+            raise TypeError("TupleDescriptor must be set to a tuple")
+        elif isinstance(value, tuple) and all(0 <= item <= 1 for item in value):
             instance._tuple = value
         else:
             raise ValueError("Tuple elements must be between 0 and 1")

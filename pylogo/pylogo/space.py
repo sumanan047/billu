@@ -56,5 +56,4 @@ class Space(AgentBase):
         plt.xlabel("X-axis")
         plt.ylabel("Y-axis")
         plt.title("Space")
-        plt.savefig("space.png")
-        plt.show()
+        # plt.savefig("space.png")

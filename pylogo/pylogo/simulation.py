@@ -10,13 +10,14 @@ class Time:
         self.start_time = start_time
         self.end_time = end_time
         self.time_step = time_step
+        self.current_time = start_time # start with the start_time and then change
 
     def __iter__(self):
         self.current_time = self.start_time
         return self
 
     def __next__(self):
-        if self.current_time < self.end_time:
+        if self.current_time + self.time_step < self.end_time:
             self.current_time += self.time_step
             return self.current_time
         else:
@@ -31,6 +32,8 @@ class Time:
 
 class simulation:
     def __init__(self, sim_agent_rules: dict, _time: Time = None):
+        if len(list(sim_agent_rules.keys())) == 0:
+            raise ValueError("The simulation agent rules dictionary cannot be empty.")
         self.sim_agent_rules = sim_agent_rules
         self._time = _time
         self.data = None # dataframe to store the simulation data
