@@ -4,3 +4,4 @@ omit =
     tests/*
     script_*
     scripts_*
+    test_*
