@@ -2,3 +2,5 @@
 omit =
     *__init__.py
     tests/*
+    script_*
+    scripts_*
