@@ -49,4 +49,3 @@ nosetests.xml
 *.csv
 *.png
 *.gif
-pylogo/pylogo/utils.py
