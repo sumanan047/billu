@@ -91,9 +91,8 @@ A simulation should have a database that stores the state of the model at each t
 
 A simulation will also have a visualization method that will visualize the state of the model at each tick with the help of a callback function or a database.
 
-
 ## Database
 
 > A database is a collection of models that a user can store and retrieve.
 
-> &copy; 2025 The Short Epoch. All Rights Reserved.
+&copy; 2025 The Short Epoch. All Rights Reserved.
