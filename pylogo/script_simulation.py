@@ -3,9 +3,9 @@ import numpy as np
 from pylogo.agent import Agent, AgentSet
 from pylogo.distributions import Distribution_1D, Distribution_2D
 from pylogo.simulation import Simulation, Time
-from pylogo.rules import move_by_at_angle, move_up
+from pylogo.rules import move_by_at_angle, move_up, move_randomly
 
-NO_AGENTS = 30
+NO_AGENTS = 5
 
 # make distributions
 d1 = Distribution_2D()
@@ -28,23 +28,12 @@ x = []
 y = []
 for i in range(100):
     # make a simulation
-    sim = Simulation({agset: [move_by_at_angle]}, _t)
-    # x.append(ag.x_pos)
-    # y.append(ag.y_pos)
-    # ax.plot(x, y, 'r-')
     ax.clear()
     ax.set_xlim(-x_lim, y_lim)
     ax.set_ylim(-x_lim, y_lim)
     ax.set_aspect('equal')
-    sim.run_simulation(distance=0.5*i, angle=i*np.pi/10)
-    # print("xxxxxxxxxxxxxxxxxxx")
+    sim = Simulation({agset: [move_randomly]}, _t)
+    sim.run_simulation(distance_range=[0,10], angle=[0, 2*np.pi])
     ax.plot([ag.x_pos for ag in agset.agents], [ag.y_pos for ag in agset.agents], 'ro')
     plt.pause(0.1)
-    # for ag in agset.agents:
-    #     ax.plot(ag.x_pos, ag.y_pos, 'ro')
-    #     print("======================================")
-    #     print(ag.unique_id)
-    #     print(ag.x_pos, ag.y_pos)
-    #     print("======================================")
-    #     plt.pause(0.1)
 plt.show()
