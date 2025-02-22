@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import numpy as np
 from pylogo.agent import Agent, AgentSet
 from pylogo.distributions import Distribution_1D, Distribution_2D
@@ -26,8 +27,8 @@ ax.set_xlim(-x_lim, y_lim)
 ax.set_ylim(-x_lim, y_lim)
 x = []
 y = []
-for i in range(100):
-    # make a simulation
+
+def update(frame):
     ax.clear()
     ax.set_xlim(-x_lim, y_lim)
     ax.set_ylim(-x_lim, y_lim)
@@ -35,5 +36,8 @@ for i in range(100):
     sim = Simulation({agset: [move_randomly]}, _t)
     sim.run_simulation(distance_range=[0,10], angle=[0, 2*np.pi])
     ax.plot([ag.x_pos for ag in agset.agents], [ag.y_pos for ag in agset.agents], 'ro')
-    plt.pause(0.1)
+
+ani = animation.FuncAnimation(fig, update, frames=100, interval=100, repeat=False)
+
+ani.save('animation.gif', writer='pillow')
 plt.show()
