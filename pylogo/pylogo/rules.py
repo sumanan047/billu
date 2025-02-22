@@ -183,5 +183,14 @@ def move_randomly(bound_agent: Union[Agent, AgentSet],
         raise ValueError("The bound_agent must be an instance of the Agent or AgentSet class.")
     elif isinstance(bound_agent, AgentSet):
         for ag in bound_agent.agents:
-            move_by_at_angle(ag, np.random.uniform(*distance_range), np.random.uniform(*angle_range))
+            distance = np.random.uniform(*distance_range)
+            angle = np.random.uniform(*angle_range)
+            move_by_at_angle(ag, distance, angle)
+    else:
+        distance = np.random.uniform(*distance_range)
+        angle = np.random.uniform(*angle_range)
+        bound_agent.x_pos += distance * np.cos(angle)
+        bound_agent.y_pos += distance * np.sin(angle)
+        bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
+        bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
