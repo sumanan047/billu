@@ -164,3 +164,24 @@ def move_by_at_angle(bound_agent: Union[Agent, AgentSet], distance, angle):
         bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
         bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
+def move_randomly(bound_agent: Union[Agent, AgentSet],
+                  distance_range:list = [0,1],
+                  angle_range=[0, 2*np.pi]):
+    """
+    Moves the bound_agent by a random distance within the range distance_range in a random direction
+    within angle_range.
+
+    Parameters:
+    bound_agent (Agent or AgentSet): The agent or agent set to be moved.
+    distance_range (list): The range of distances within which the agent(s) can be moved. Defaults to [0, 1].
+    angle_range (list): The range of angles within which the agent(s) can be moved. Defaults to [0, 2*np.pi].
+
+    Raises:
+    ValueError: If the bound_agent is not an instance of the Agent or AgentSet class.
+    """
+    if not isinstance(bound_agent, (Agent, AgentSet)):
+        raise ValueError("The bound_agent must be an instance of the Agent or AgentSet class.")
+    elif isinstance(bound_agent, AgentSet):
+        for ag in bound_agent.agents:
+            move_by_at_angle(ag, np.random.uniform(*distance_range), np.random.uniform(*angle_range))
+

@@ -1,4 +1,4 @@
-from pylogo.rules import move_to, move_by, move_up, move_down, move_left, move_right, move_by_at_angle
+from pylogo.rules import *
 from pylogo.distributions import Distribution_1D, Distribution_2D
 from pylogo.agent import Agent, AgentSet
 import pytest
@@ -101,3 +101,87 @@ def test_move_right_agentset(_agent_set):
     agent_set[0].x_pos = 5
     move_right(agent_set, 2)
     assert agent_set[0].x_pos == 7
+
+def test_move_by_at_angle_agentset(_agent_set):
+    agent_set = _agent_set
+    # get initial x and y positions of first agent
+    x_pos = agent_set[0].x_pos
+    y_pos = agent_set[0].y_pos
+    for agent in agent_set:
+        agent.register_rule('move_by_at_angle', move_by_at_angle)
+    move_by_at_angle(agent_set, 1, np.pi/2)
+    # check if the first agent has moved by 1 unit in the y direction
+    assert np.isclose(agent_set[0].x_pos - x_pos, 0.0, atol=1e-2)  # approximate value with tolerance of 0.01
+    assert np.isclose(agent_set[0].y_pos - y_pos, 1.0, atol=1e-2)  # approximate value with tolerance of 0.01
+
+def test_move_randomly(_agent_set):
+    agent_set = _agent_set
+    # get first agent's original x and y positions
+    x_pos = agent_set[0].x_pos
+    y_pos = agent_set[0].y_pos
+    for agent in agent_set:
+        agent.register_rule('move_randomly', move_randomly)
+    move_randomly(agent_set)
+    assert agent_set[0].x_pos != x_pos
+    assert agent_set[0].y_pos != y_pos
+
+# test for ValueError
+def test_move_to_value_error():
+    with pytest.raises(ValueError):
+        move_to("agent", 1, 2)
+
+def test_move_by_value_error():
+    with pytest.raises(ValueError):
+        move_by("agent", 1, 2)
+
+def test_move_up_value_error():
+    with pytest.raises(ValueError):
+        move_up("agent", 1)
+
+def test_move_down_value_error():
+    with pytest.raises(ValueError):
+        move_down("agent", 1)
+
+def test_move_left_value_error():
+    with pytest.raises(ValueError):
+        move_left("agent", 1)
+
+def test_move_right_value_error():
+    with pytest.raises(ValueError):
+        move_right("agent", 1)
+
+def test_move_by_at_angle_value_error():
+    with pytest.raises(ValueError):
+        move_by_at_angle("agent", 1, 2)
+
+def test_move_randomly_value_error():
+    with pytest.raises(ValueError):
+        move_randomly("agent", [0,1], [0,1])
+
+def test_move_to_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_to("agent", 1, 2)
+
+def test_move_up_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_up("agent", 1)
+
+def test_move_down_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_down("agent", 1)
+
+def test_move_left_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_left("agent", 1)
+
+def test_move_right_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_right("agent", 1)
+
+def test_move_by_at_angle_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_by_at_angle("agent", 1, 2)
+
+def test_move_randomly_agentset_value_error():
+    with pytest.raises(ValueError):
+        move_randomly("agent", [0,1], [0,1])
