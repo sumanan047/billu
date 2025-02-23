@@ -107,7 +107,7 @@ def test_agent_set_properties():
 
 def test_agent_export():
     agent = Agent()
-    agent.set_properties(age=90, name='John', cars = ['mercedez', 'volvo', 'ferrari'])
+    agent.set_properties(age=90, name='John', cars = 'mercedez')
     agent._export()
 
 def test_agent_set_properties_int():

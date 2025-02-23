@@ -194,3 +194,74 @@ def move_randomly(bound_agent: Union[Agent, AgentSet],
         bound_agent.agent_dict['x_pos'] = bound_agent.x_pos
         bound_agent.agent_dict['y_pos'] = bound_agent.y_pos
 
+def update_property(bound_agent: Union[Agent, AgentSet], prop_name, prop_value):
+    """
+    Update the property of the bound_agent to the specified value.
+
+    Parameters:
+    bound_agent (Agent or AgentSet): The agent or agent set whose property is to be updated.
+    prop_name (str): The name of the property to be updated.
+    prop_value: The value to update the property to.
+
+    Raises:
+    ValueError: If the bound_agent is not an instance of the Agent or AgentSet class.
+    """
+    if not isinstance(bound_agent, (Agent, AgentSet)):
+        raise ValueError("The bound_agent must be an instance of the Agent or AgentSet class.")
+    elif isinstance(bound_agent, AgentSet):
+        for ag in bound_agent.agents:
+            update_property(ag, prop_name, prop_value)
+    else:
+        if prop_name in bound_agent.properties:
+            setattr(bound_agent, prop_name, prop_value)
+            bound_agent.agent_dict[prop_name] = prop_value
+        else:
+            raise KeyError(f"Property {prop_name} does not exist in the agent.")
+
+def increment_property(bound_agent: Union[Agent, AgentSet], prop_name, increment=1):
+    """
+    Increment the property of the bound_agent by the specified amount.
+
+    Parameters:
+    bound_agent (Agent or AgentSet): The agent or agent set whose property is to be incremented.
+    prop_name (str): The name of the property to be incremented.
+    increment (int): The amount by which to increment the property. Default is 1.
+
+    Raises:
+    ValueError: If the bound_agent is not an instance of the Agent or AgentSet class.
+    """
+    if not isinstance(bound_agent, (Agent, AgentSet)):
+        raise ValueError("The bound_agent must be an instance of the Agent or AgentSet class.")
+    elif isinstance(bound_agent, AgentSet):
+        for ag in bound_agent.agents:
+            increment_property(ag, prop_name, increment)
+    else:
+        if prop_name in bound_agent.properties:
+            setattr(bound_agent, prop_name, getattr(bound_agent, prop_name) + increment)
+            bound_agent.agent_dict[prop_name] = getattr(bound_agent, prop_name)
+        else:
+            raise KeyError(f"Property {prop_name} does not exist in the agent.")
+
+def decrement_property(bound_agent: Union[Agent, AgentSet], prop_name, decrement=1):
+    """
+    Decrement the property of the bound_agent by the specified amount.
+
+    Parameters:
+    bound_agent (Agent or AgentSet): The agent or agent set whose property is to be decremented.
+    prop_name (str): The name of the property to be decremented.
+    decrement (int): The amount by which to decrement the property. Default is 1.
+
+    Raises:
+    ValueError: If the bound_agent is not an instance of the Agent or AgentSet class.
+    """
+    if not isinstance(bound_agent, (Agent, AgentSet)):
+        raise ValueError("The bound_agent must be an instance of the Agent or AgentSet class.")
+    elif isinstance(bound_agent, AgentSet):
+        for ag in bound_agent.agents:
+            decrement_property(ag, prop_name, decrement)
+    else:
+        if prop_name in bound_agent.properties:
+            setattr(bound_agent, prop_name, getattr(bound_agent, prop_name) - decrement)
+            bound_agent.agent_dict[prop_name] = getattr(bound_agent, prop_name)
+        else:
+            raise KeyError(f"Property {prop_name} does not exist in the agent.")

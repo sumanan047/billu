@@ -133,7 +133,10 @@ class Agent(AgentBase):
         Args:
             **kwargs: The properties to set.
         """
-        self.properties.update(kwargs)
+        for key, value in kwargs.items():
+            setattr(self, key, value)  # Set attribute of the class
+            self.properties[key] = value  # Update the properties dict
+            self.agent_dict[key] = value  # Update the agent_dict
 
     def _visualize(self):
         fig, ax = plt.subplots()
@@ -219,6 +222,22 @@ class AgentSet(AgentBase):
         else:
             raise TypeError("position_dist must be a Distribution object")
 
+    def set_properties(self, **kwargs):
+        """
+        Sets the properties of the agents in the set.
+
+        Args:
+            **kwargs: The properties to set.
+        """
+        for key, value in kwargs.items():
+            if key not in self.agentset_properties.keys():
+                for i, agent in enumerate(self.agents):
+                    agent.properties[key] = value # add it to the propeteis
+                    setattr(agent, key, value)  # Set attribute on the agent
+                    agent.agent_dict[key] = value  # Update the agent_dict
+            else:
+                raise ValueError(f"{key} already exists in agentset_properties")
+    
     def _make_agents(self, position_dist: Distribution_2D=None, size_dist: Distribution_2D=None, color: tuple=None):
         """
         Creates and returns a list of agents based on the position distribution.
