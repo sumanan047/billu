@@ -35,7 +35,7 @@ def update(frame):
     ax.set_aspect('equal')
     sim = Simulation({agset: [move_randomly]}, _t)
     sim.run_simulation(distance_range=[0,10], angle=[0, 2*np.pi])
-    ax.plot([ag.x_pos for ag in agset.agents], [ag.y_pos for ag in agset.agents], 'ro')
+    ax.plot([ag.x_pos for ag in agset.agents], [ag.y_pos for ag in agset.agents], 'rx')
 
 ani = animation.FuncAnimation(fig, update, frames=100, interval=100, repeat=False)
 
