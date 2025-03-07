@@ -84,6 +84,16 @@ class Simulation:
 
     def save_simulation(self):
         """
-        User should ovveride this method to save the simulation.
+        User should override this method to save the simulation.
         """
-        print("Simulation saved.")
+        agent_dicts = []
+        for key in self.sim_agent_rules.keys():
+            if isinstance(key, AgentSet):
+                for agent in key.agents:
+                    agent_dicts.append(agent.__dict__)
+            elif isinstance(key, Agent):
+                agent_dicts.append(key.__dict__)
+        print(agent_dicts)
+        self.data = pd.DataFrame(agent_dicts)
+        print(self.data)
+        self.data.to_csv("simulation_data.csv")

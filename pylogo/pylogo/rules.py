@@ -265,3 +265,23 @@ def decrement_property(bound_agent: Union[Agent, AgentSet], prop_name, decrement
             bound_agent.agent_dict[prop_name] = getattr(bound_agent, prop_name)
         else:
             raise KeyError(f"Property {prop_name} does not exist in the agent.")
+        
+def decrement_property_agent(bound_agent: Agent, prop_name, decrement=1):
+    """
+    Decrement the property of the bound_agent by the specified amount.
+
+    Parameters:
+    bound_agent (Agent or AgentSet): The agent or agent set whose property is to be decremented.
+    prop_name (str): The name of the property to be decremented.
+    decrement (int): The amount by which to decrement the property. Default is 1.
+
+    Raises:
+    ValueError: If the bound_agent is not an instance of the Agent or AgentSet class.
+    """
+    if not isinstance(bound_agent, (Agent)):
+        raise ValueError("The bound_agent must be an instance of the Agent class.")
+    if prop_name in bound_agent.properties:
+        setattr(bound_agent, prop_name, getattr(bound_agent, prop_name) - decrement)
+        bound_agent.agent_dict[prop_name] = getattr(bound_agent, prop_name)
+    else:
+        raise KeyError(f"Property {prop_name} does not exist in the agent.")
