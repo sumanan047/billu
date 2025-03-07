@@ -1,7 +1,4 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import numpy as np
-import random
 from pylogo import agent, distributions
 
 d1 = distributions.Distribution_2D()
