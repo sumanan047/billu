@@ -53,5 +53,5 @@ def animate(i):
     return line,
 
 ani = animation.FuncAnimation(fig, animate, frames=4, interval=1)
-ani.save('animation.gif', writer='pillow')
+ani.save('agent_animation.gif', writer='pillow')
 plt.show()
