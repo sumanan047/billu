@@ -13,6 +13,7 @@ if __name__ == '__main__':
     agentset = AgentSet()
     agentset.create(wealth=wealth_distribution, age=age_distribution, kill = killing_instinct)
     
+
+    agentset.remove(agentset.agents[0])
     
-    for agent in agentset.agents:
-        print(agent.__dict__)
+    print(len(agentset.agents))

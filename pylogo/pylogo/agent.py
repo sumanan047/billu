@@ -108,3 +108,6 @@ class AgentSet(Agent):
             agent: The agent to be removed.
         """
         self.agents.remove(agent)
+
+    def __repr__(self) -> str:
+        return f'AgentSet({self.no}, {self.agents})'
