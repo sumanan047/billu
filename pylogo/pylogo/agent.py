@@ -62,8 +62,8 @@ class Agent(AgentBase):
 
 class AgentSet(Agent):
 
-    def __init__(self):
-        self.no = 10 # number of agents
+    def __init__(self,no=10):
+        self.no = no # number of agents
         self.agents = [] # list of agents
 
     def create(self, **dist):

@@ -1,50 +1,37 @@
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import numpy as np
-from pylogo.agent import Agent, AgentSet
-from pylogo.distributions import Distribution_1D, Distribution_2D
-from pylogo.simulation import Simulation, Time
-from pylogo.rules import move_by_at_angle, move_up, move_randomly, decrement_property_agent
+from pylogo.simtime import SimTime
+from pylogo.agent import AgentSet
+import matplotlib.pyplot as plt
 
-NO_AGENTS = 10
+NO_AGENTS = 100
 
-# make distributions
-d1 = Distribution_2D()
-d1.uniform(low=[-20,-20], high=[50,70], size=NO_AGENTS)
-d2 = Distribution_2D()
-d2.uniform(low=[0.5,0.5], high=[0.5,0.5], size=NO_AGENTS)
+# Define time
+_time = SimTime(0, 1, 1000).arr
 
-# make an agent
-ag = Agent()
-agset = AgentSet(number = NO_AGENTS, position_dist=d1, size_dist=d2, color=(1, 0, 0))
-agset.set_properties(energy=100)
+# Define agentset
+wealth_distribution = np.random.uniform(500,500,NO_AGENTS)
+agentset = AgentSet(no=NO_AGENTS)
+agentset.create(wealth=wealth_distribution)
 
-# Make time # that is a wonderful thing to say
-_t = Time(0, 10, 1)
+def loose_money(agent):
+    if agent.wealth > 100:
+        agent.wealth -= 100
 
+def gain_money(agent):
+    if agent.wealth < 100:
+        agent.wealth += 100
 
-fig, ax = plt.subplots(figsize=(10, 10))
-x_lim = 100
-y_lim = 100
-ax.set_aspect('equal')
-ax.set_xlim(-x_lim, y_lim)
-ax.set_ylim(-x_lim, y_lim)
-x = []
-y = []
+fig, ax = plt.subplots()
 
-def update(frame):
+# Define simulation
+for t in _time:
     ax.clear()
-    ax.set_xlim(-x_lim, y_lim)
-    ax.set_ylim(-x_lim, y_lim)
-    ax.set_aspect('equal')
-    sim = Simulation({agset: [move_randomly, decrement_property_agent]}, _t)
-    sim.run_simulation(distance_range=[0,10], angle=[0, 2*np.pi], prop_name = "energy", decrement=1)
-    ax.plot([ag.x_pos for ag in agset.agents], [ag.y_pos for ag in agset.agents], 'rx')
-    # for ag in agset.agents:
-    #     ax.annotate(f"{ag.agent_dict['energy']}", (ag.x_pos, ag.y_pos))
-    sim.save_simulation()
-
-ani = animation.FuncAnimation(fig, update, frames=1, interval=1, repeat=False)
-
-ani.save('animation.gif', writer='pillow')
+    # print(f'Time: {t}')
+    # print(np.random.choice(agentset.agents))
+    ag1, ag2 = np.random.choice(agentset.agents, 2)
+    loose_money(ag1)
+    gain_money(ag2)
+    ax.hist([agent.wealth for agent in agentset.agents], bins=50, color='green', alpha=0.7, edgecolor='black')
+    ax.set_ylim(0, NO_AGENTS)  # Set y-axis limits
+    plt.pause(0.01)  # Reduce the pause duration for faster animation
 plt.show()
