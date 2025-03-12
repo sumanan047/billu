@@ -1,43 +1,51 @@
-import numpy as np
+from pylogo.agent import TurtleSet
+from pylogo.model import Model
 from pylogo.simtime import SimTime
-from pylogo.agent import AgentSet
+import numpy as np
 import matplotlib.pyplot as plt
 
-NO_AGENTS = 100
+# define the agentsets
+money_agent = TurtleSet(numbers = 1000)
+money_agent.set_prop_constant('money', 50)
 
-# Define time
-_time = SimTime(0, 1, 1000).arr
+# time
+time = SimTime(start=0, steps=1, end=1000)
 
-# Define agentset
-wealth_distribution = np.random.uniform(500,500,NO_AGENTS)
-agentset = AgentSet(no=NO_AGENTS)
-agentset.create(wealth=wealth_distribution)
+class MoneyModel(Model):
+    def __init__(self, time, agent_dict):
+        super().__init__(time, agent_dict=money_agent)
+
+    def setup(self):
+        self.agent_dict.set_prop_constant('money', 50)
+
+    def step(self):
+        EXCHANGE_AMOUNT = 25
+        # loser_agent with money more than 10
+        filtered_agent = self.agent_dict.filter_agents_greater_than('money', EXCHANGE_AMOUNT)
+        # choose from the filtered agents
+        loser_agent = np.random.choice(filtered_agent)
+        # winner agent
+        winner_agent = np.random.choice(list(self.agent_dict.turtle_dict.values()))
+        while winner_agent.id == loser_agent.id:
+            winner_agent = np.random.choice(list(self.agent_dict.turtle_dict.values()))
+        loser_agent.inc_prop('money', -EXCHANGE_AMOUNT)
+        winner_agent.inc_prop('money', EXCHANGE_AMOUNT)
+
+        plt.hist([_agent.__dict__['money'] for _agent in self.agent_dict.turtle_dict.values()], bins=int(2*np.log(self.agent_dict.numbers)))
+        # money agent
+    def save(self):
+        pass
 
 
-
+# Money model execution
+money_model = MoneyModel(time, money_agent)
+money_model.setup()
+# make below an animation
 fig, ax = plt.subplots()
-
-# Define simulation
-for t in _time:
+for t in time:
     ax.clear()
-    # print(f'Time: {t}')
-    # print(np.random.choice(agentset.agents))
-    ag1, ag2 = np.random.choice(agentset.agents, 2)
-
-    # @ag1.action
-    def loose_money(agent):
-        if agent.wealth > 100:
-            agent.wealth -= 100
-
-    # @ag2.action
-    def gain_money(agent):
-        if agent.wealth < 100:
-            agent.wealth += 100
-
-    loose_money(ag1)
-    gain_money(ag2)
-
-    ax.hist([agent.wealth for agent in agentset.agents], bins=50, color='green', alpha=0.7, edgecolor='black')
-    ax.set_ylim(0, NO_AGENTS)  # Set y-axis limits
-    plt.pause(0.01)  # Reduce the pause duration for faster animation
-plt.show()
+    money_model.step()
+    plt.pause(0.1)
+    # save is a fake method for now
+    money_model.save()
+# plt.hist([_agent.__dict__['money'] for _agent in money_agent.turtle_dict.values()], bins=int(2*np.log(money_agent.numbers)))

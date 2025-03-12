@@ -1,18 +1,18 @@
 import uuid
-
+# Model Class
 class Model:
-    def __init__(self, agentset_dict, time_ = None) -> None:
+    def __init__(self, time, agent_dict, **kwargs):
         self.model_id = str(uuid.uuid4())
-        self.agentset_dict = agentset_dict # dictionary of agentset name and agentset object
-        self.time = time_ # this should be time object
+        self.time = time
+        self.agent_dict = agent_dict # it could be as simple as sheep = SheepAgentSet()
 
-    def __repr__(self) -> str:
-        return f'Model({self.model_id}, {self.agentset_dict}, {self.time})'
-    
-    def run(self):
-        for t in self.time:
-            for agentset in self.agentset_dict.values():
-                for agent in agentset.agents:
-                    agent.action(self)
-            # update the plot
-            pass
+    def setup(self):
+        # initial position and state of all the agents can be set here
+        # to be written by user
+        pass
+
+    def step(self):
+        pass
+
+    def save(self):
+        pass

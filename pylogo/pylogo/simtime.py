@@ -10,5 +10,7 @@ class SimTime:
     def __str__(self):
         return f"SimTime(start={self.start}, steps={self.steps}, end={self.end})"
 
-    def __iter__(self):
-        return iter(self.arr)
+    def __new__(cls, *args, **kwargs):
+        obj = super().__new__(cls)
+        obj.__init__(*args, **kwargs)
+        return obj.arr
