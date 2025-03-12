@@ -5,7 +5,7 @@ import uuid
 class AgentBase(ABC):
 
     @abstractmethod
-    def action(self, model):
+    def action(self):
         """ This is any method that takes in the AgentSet and updates the agent """
         pass
 
@@ -53,8 +53,11 @@ class Agent(AgentBase):
         """Optional: Updates the properties of the agent."""
         self.__dict__.update(kwargs)
 
-    def action(self):
-        pass
+    def action(self, func):
+        def wrapper(*args, **kwargs):
+            print(f'Agent {self.unique_id} is performing action')
+            return func(*args, **kwargs)
+        return wrapper
 
     def __repr__(self) -> str:
         return f'Agent({self.unique_id}, {self._red}, {self._green}, {self._blue}, {self._x_pos}, {self._y_pos}, {self._x_size}, {self._y_size})'
