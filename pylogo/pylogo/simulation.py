@@ -18,16 +18,12 @@ class Simulation:
             warnings.warn("Animation dictionary is empty. Using default values.")
             animation_dict = {'frames': 100, 'interval': 100}
         fig, ax = plt.subplots()
-        # self.init(ax, plot_dict=plot_dict)
-        print("*"*10)
-        print("passed kwargs: ", plot_dict)
-        print("*"*10)
         ani = animation.FuncAnimation(fig,
                                       self._animation_hook,
                                       fargs=(ax, property_name, type, plot_dict),
                                       frames=animation_dict['frames'],
                                       interval=animation_dict['interval'],
-                                      repeat=True)
+                                      repeat=kwargs.get('repeat', False))
         # save the animation
         ani.save('animation.gif', writer='pillow')
 
@@ -42,16 +38,8 @@ class Simulation:
         return ax
 
     def _animation_hook(self, i, ax, property_name, type, plot_dict, **kwargs):
-        # get all the agents and their properties from the model
-        # and plot them
-        print("Animation Hook is getting called.")
         self.model.step()
         ax.clear()
-        print("*"*10)
-        print(f"Property Name: {property_name}")
-        print(f"Type: {type}")
-        print(f"Kwargs: {plot_dict}")
-        print("*"*10)
         self.init(ax, plot_dict)
         if type == 'histogram':
             ax.hist([turtle.__dict__[property_name] for turtle in self.model.agent_dict.turtle_dict.values()],

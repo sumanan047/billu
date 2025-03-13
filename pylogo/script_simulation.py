@@ -39,9 +39,6 @@ class MoneyModel(Model):
             winner_agent = np.random.choice(list(self.agent_dict.turtle_dict.values()))
         loser_agent.inc_prop('money', -EXCHANGE_AMOUNT)
         winner_agent.inc_prop('money', EXCHANGE_AMOUNT)
-        print("Step is getting called")
-        print(f"Winner: {winner_agent.money}")
-        print(f"Loser: {loser_agent.money}")
 
     def save(self):
         print("Saving the model")
