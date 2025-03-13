@@ -2,10 +2,11 @@ from pylogo.agent import TurtleSet
 from pylogo.model import Model
 from pylogo.simtime import SimTime
 import numpy as np
+from PIL import Image
 import matplotlib.pyplot as plt
 
 # define the agentsets
-money_agent = TurtleSet(numbers = 1000)
+money_agent = TurtleSet(numbers = 10)
 money_agent.set_prop_constant('money', 50)
 
 # time
@@ -18,8 +19,8 @@ class MoneyModel(Model):
     def setup(self):
         self.agent_dict.set_prop_constant('money', 50)
 
-    def step(self):
-        EXCHANGE_AMOUNT = 25
+    def step(self, amount = 25):
+        EXCHANGE_AMOUNT = amount
         # loser_agent with money more than 10
         filtered_agent = self.agent_dict.filter_agents_greater_than('money', EXCHANGE_AMOUNT)
         # choose from the filtered agents
@@ -31,8 +32,6 @@ class MoneyModel(Model):
         loser_agent.inc_prop('money', -EXCHANGE_AMOUNT)
         winner_agent.inc_prop('money', EXCHANGE_AMOUNT)
 
-        plt.hist([_agent.__dict__['money'] for _agent in self.agent_dict.turtle_dict.values()], bins=int(2*np.log(self.agent_dict.numbers)))
-        # money agent
     def save(self):
         pass
 
@@ -40,12 +39,17 @@ class MoneyModel(Model):
 # Money model execution
 money_model = MoneyModel(time, money_agent)
 money_model.setup()
-# make below an animation
 fig, ax = plt.subplots()
-for t in time:
-    ax.clear()
+for i in range(1000):
+    ax.clear
     money_model.step()
+    print(f"Step: {i}")
+    print(f"Number of Agents: {len(money_agent.turtle_dict)}")
+    print(f"Total Money: {sum([turtle.money for turtle in money_agent.turtle_dict.values()])}")
+    ax.hist([turtle.money for turtle in money_agent.turtle_dict.values()], bins=50)
+    ax.set_xlabel('Money')
+    ax.set_ylabel('Number of Agents')
     plt.pause(0.1)
-    # save is a fake method for now
-    money_model.save()
-# plt.hist([_agent.__dict__['money'] for _agent in money_agent.turtle_dict.values()], bins=int(2*np.log(money_agent.numbers)))
+plt.show()
+
+
