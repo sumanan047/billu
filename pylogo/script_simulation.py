@@ -5,21 +5,29 @@ from pylogo.simulation import Simulation
 import numpy as np
 import matplotlib.pyplot as plt
 
+NO_OF_AGENTS = 10
+TOTAL_MONEY = 500 # 50$ to each agent
+MONEY_PER_AGENT = 50
+EXCHANGE_AMOUNT = 25
+TIME_STEP = 1
+END_TIME = 100
+NO_FRAMES = 100
+
 # define the agentsets
-money_agent = TurtleSet(numbers = 10)
-money_agent.set_prop_constant('money', 50)
+money_agent = TurtleSet(numbers = NO_OF_AGENTS)
+money_agent.set_prop_constant('money', MONEY_PER_AGENT)
 
 # time
-time = SimTime(start=0, steps=1, end=1000)
+time = SimTime(start=0, steps=TIME_STEP, end=END_TIME)
 
 class MoneyModel(Model):
     def __init__(self, time, agent_dict):
         super().__init__(time, agent_dict=money_agent)
 
     def setup(self):
-        self.agent_dict.set_prop_constant('money', 50)
+        self.agent_dict.set_prop_constant('money', MONEY_PER_AGENT)
 
-    def step(self, amount = 25):
+    def step(self, amount = EXCHANGE_AMOUNT):
         EXCHANGE_AMOUNT = amount
         # loser_agent with money more than 10
         filtered_agent = self.agent_dict.filter_agents_greater_than('money', EXCHANGE_AMOUNT)
@@ -42,20 +50,11 @@ class MoneyModel(Model):
 # Money model execution
 money_model = MoneyModel(time, money_agent)
 money_model.setup()
-# fig, ax = plt.subplots()
-# for i in range(1000):
-#     ax.clear
-#     money_model.step()
-#     print(f"Step: {i}")
-#     print(f"Number of Agents: {len(money_agent.turtle_dict)}")
-#     print(f"Total Money: {sum([turtle.money for turtle in money_agent.turtle_dict.values()])}")
-#     ax.hist([turtle.money for turtle in money_agent.turtle_dict.values()], bins=50)
-#     ax.set_xlabel('Money')
-#     ax.set_ylabel('Number of Agents')
-#     plt.pause(0.1)
-# plt.show()
 
 # Simulation
 sim = Simulation(model=money_model, time=time)
-sim.run()
+sim.run(property_name='money',
+        type='histogram',
+        plot_dict={'xlabel': 'Money', 'ylabel': 'Number of Agents', 'title': 'Money Distribution', 'xlim': (0, MONEY_PER_AGENT*10), 'ylim': (0, NO_OF_AGENTS*2)},
+        animation_dict={'frames': NO_FRAMES, 'interval': NO_FRAMES})
 
